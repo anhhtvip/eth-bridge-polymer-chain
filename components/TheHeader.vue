@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <div class="title">
-        <h1>Lottery dApp</h1>
+        <h1>Deposite & Bridge dApp</h1>
         <span>TESTNET</span>
       </div>
       <CommonConnectButton />

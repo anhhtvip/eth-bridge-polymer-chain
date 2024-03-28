@@ -69,6 +69,7 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 
 ## Proof of testnet interaction
 
+
 ## Challenges Faced
 
 
@@ -82,5 +83,5 @@ Basic functionality was implemented, but the following things can be improved:
 
 - More tests
 - More input validation
-- More clean code. 
+- More improvement for user view. 
 - Add event listeners related to important IBC lifecycle steps

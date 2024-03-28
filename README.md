@@ -88,3 +88,7 @@ Basic functionality was implemented, but the following things can be improved:
 - More input validation
 - More improvement for user view. 
 - Add event listeners related to important IBC lifecycle steps
+
+## Licence
+
+MIT

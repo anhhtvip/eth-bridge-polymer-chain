@@ -9,7 +9,9 @@ This repository is created to enter the PIT phase 1 challenge # 5. [quest](https
 
 ## Description
 
-This application allow user to deposit and exchange their token between the network supported.
+Story: As a user, I require the capability to exchange ETH across various networks.
+
+Solution: The user chooses both the source and destination chains, initiating a fund transfer to the destination chain. We employ Polymer IBC to notify the target chain. Consequently, the user receives ETH on the target chain.
 
 Features:
 

@@ -7,7 +7,3 @@
     </div>
   </main>
 </template>
-
-<style>
-@import url("~/assets/index.css");
-</style>

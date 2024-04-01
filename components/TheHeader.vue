@@ -3,7 +3,6 @@
     <div class="container">
       <div class="title">
         <h1>Deposite & Bridge dApp</h1>
-        <span>TESTNET</span>
       </div>
       <CommonConnectButton />
     </div>

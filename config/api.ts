@@ -21,19 +21,25 @@ export const abi = [
       {
         indexed: true,
         internalType: 'bytes32',
-        name: 'channelId',
+        name: 'id',
         type: 'bytes32',
       },
       {
-        indexed: false,
-        internalType: 'uint64',
-        name: 'sequence',
-        type: 'uint64',
+        indexed: true,
+        internalType: 'uint256',
+        name: 'fromChainId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'toChainId',
+        type: 'uint256',
       },
       {
         indexed: false,
         internalType: 'address',
-        name: 'winner',
+        name: 'sender',
         type: 'address',
       },
       {
@@ -42,14 +48,8 @@ export const abi = [
         name: 'amount',
         type: 'uint256',
       },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'counter',
-        type: 'uint256',
-      },
     ],
-    name: 'AckRewardSent',
+    name: 'AckBridge',
     type: 'event',
   },
   {
@@ -57,24 +57,98 @@ export const abi = [
     inputs: [
       {
         indexed: true,
+        internalType: 'bytes32',
+        name: 'id',
+        type: 'bytes32',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'chainId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
         internalType: 'address',
-        name: '_from',
+        name: 'sender',
         type: 'address',
       },
       {
         indexed: false,
         internalType: 'uint256',
-        name: '_value',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'AckDeposit',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'id',
+        type: 'bytes32',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'fromChainId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'toChainId',
         type: 'uint256',
       },
       {
         indexed: false,
+        internalType: 'address',
+        name: 'sender',
+        type: 'address',
+      },
+      {
+        indexed: false,
         internalType: 'uint256',
-        name: '_counter',
+        name: 'amount',
         type: 'uint256',
       },
     ],
-    name: 'Enter',
+    name: 'Bridge',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'id',
+        type: 'bytes32',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'chainId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'sender',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'Deposit',
     type: 'event',
   },
   {
@@ -102,13 +176,25 @@ export const abi = [
       {
         indexed: true,
         internalType: 'bytes32',
-        name: 'channelId',
+        name: 'id',
         type: 'bytes32',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'fromChainId',
+        type: 'uint256',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'toChainId',
+        type: 'uint256',
       },
       {
         indexed: false,
         internalType: 'address',
-        name: 'winner',
+        name: 'sender',
         type: 'address',
       },
       {
@@ -117,14 +203,8 @@ export const abi = [
         name: 'amount',
         type: 'uint256',
       },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'counter',
-        type: 'uint256',
-      },
     ],
-    name: 'SendWinnerInfo',
+    name: 'RecvBridge',
     type: 'event',
   },
   {
@@ -132,24 +212,30 @@ export const abi = [
     inputs: [
       {
         indexed: true,
+        internalType: 'bytes32',
+        name: 'id',
+        type: 'bytes32',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'chainId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
         internalType: 'address',
-        name: '_winner',
+        name: 'sender',
         type: 'address',
       },
       {
         indexed: false,
         internalType: 'uint256',
-        name: '_value',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: '_counter',
+        name: 'amount',
         type: 'uint256',
       },
     ],
-    name: 'Winner',
+    name: 'RecvDeposit',
     type: 'event',
   },
   {
@@ -179,19 +265,92 @@ export const abi = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: '_operator',
-        type: 'address',
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
-    name: 'addOperator',
+    name: 'balances',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: 'channelId',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'uint64',
+        name: 'timeoutSeconds',
+        type: 'uint64',
+      },
+      {
+        internalType: 'uint256',
+        name: 'toChainId',
+        type: 'uint256',
+      },
+    ],
+    name: 'bridge',
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
+      },
+    ],
+    name: 'bridgePackets',
+    outputs: [
+      {
+        internalType: 'bytes32',
+        name: 'id',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'uint256',
+        name: 'fromChainId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'toChainId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'sender',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      {
+        internalType: 'enum XBridge.IbcPacketStatus',
+        name: 'ibcStatus',
+        type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
-    name: 'betAmount',
+    name: 'chainId',
     outputs: [
       {
         internalType: 'uint256',
@@ -221,19 +380,6 @@ export const abi = [
         internalType: 'bytes32',
         name: 'cpChannelId',
         type: 'bytes32',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'counter',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -358,6 +504,63 @@ export const abi = [
     type: 'function',
   },
   {
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: 'channelId',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'uint64',
+        name: 'timeoutSeconds',
+        type: 'uint64',
+      },
+    ],
+    name: 'deposit',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
+      },
+    ],
+    name: 'depositPackets',
+    outputs: [
+      {
+        internalType: 'bytes32',
+        name: 'id',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'uint256',
+        name: 'chainId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'sender',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      {
+        internalType: 'enum XBridge.IbcPacketStatus',
+        name: 'ibcStatus',
+        type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'dispatcher',
     outputs: [
@@ -368,13 +571,6 @@ export const abi = [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'enter',
-    outputs: [],
-    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -397,19 +593,6 @@ export const abi = [
         internalType: 'struct CustomChanIbcApp.ChannelMapping[]',
         name: '',
         type: 'tuple[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getPlayers',
-    outputs: [
-      {
-        internalType: 'address[]',
-        name: '',
-        type: 'address[]',
       },
     ],
     stateMutability: 'view',
@@ -487,7 +670,7 @@ export const abi = [
           },
         ],
         internalType: 'struct IbcPacket',
-        name: 'packet',
+        name: '',
         type: 'tuple',
       },
       {
@@ -687,7 +870,7 @@ export const abi = [
           },
         ],
         internalType: 'struct IbcPacket',
-        name: '',
+        name: 'packet',
         type: 'tuple',
       },
     ],
@@ -711,7 +894,7 @@ export const abi = [
         type: 'tuple',
       },
     ],
-    stateMutability: 'view',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -796,25 +979,6 @@ export const abi = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'operators',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [],
     name: 'owner',
     outputs: [
@@ -822,84 +986,6 @@ export const abi = [
         internalType: 'address',
         name: '',
         type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'bytes32',
-        name: 'channelId',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'uint64',
-        name: 'timeoutSeconds',
-        type: 'uint64',
-      },
-    ],
-    name: 'pickWinner',
-    outputs: [
-      {
-        components: [
-          {
-            internalType: 'address',
-            name: 'winner',
-            type: 'address',
-          },
-          {
-            internalType: 'uint256',
-            name: 'amount',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'counter',
-            type: 'uint256',
-          },
-          {
-            internalType: 'enum Lottery.IbcPacketStatus',
-            name: 'ibcPacketStatus',
-            type: 'uint8',
-          },
-        ],
-        internalType: 'struct Lottery.WinnerHistory',
-        name: '',
-        type: 'tuple',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'players',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'random',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -986,19 +1072,6 @@ export const abi = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_operator',
-        type: 'address',
-      },
-    ],
-    name: 'removeOperator',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
     inputs: [],
     name: 'renounceOwnership',
     outputs: [],
@@ -1008,35 +1081,12 @@ export const abi = [
   {
     inputs: [
       {
-        internalType: 'bytes32',
-        name: 'channelId',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'uint64',
-        name: 'timeoutSeconds',
-        type: 'uint64',
-      },
-      {
         internalType: 'uint256',
-        name: '_counter',
+        name: '_chainId',
         type: 'uint256',
       },
     ],
-    name: 'sendPacket',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_betAmount',
-        type: 'uint256',
-      },
-    ],
-    name: 'setBetAmount',
+    name: 'setChainId',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -1171,40 +1221,6 @@ export const abi = [
     name: 'updateSupportedVersions',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'winnerHistories',
-    outputs: [
-      {
-        internalType: 'address',
-        name: 'winner',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'counter',
-        type: 'uint256',
-      },
-      {
-        internalType: 'enum Lottery.IbcPacketStatus',
-        name: 'ibcPacketStatus',
-        type: 'uint8',
-      },
-    ],
-    stateMutability: 'view',
     type: 'function',
   },
   {

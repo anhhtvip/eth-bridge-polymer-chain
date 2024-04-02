@@ -115,6 +115,7 @@ just bridge
 
 
 ## Proof of testnet interaction
+
 After following the steps above you should have interacted with the testnet. You can check this at the [IBC Explorer](https://sepolia.polymer.zone/packets).
 
 Here's the data of our application:
@@ -125,6 +126,7 @@ Here's the data of our application:
 - Channel (Base Sepolia): channel-40125
 
 - Proof of Deposit:
+
     - [SendTx](https://base-sepolia.blockscout.com/tx/0x19d5be71f66336d265e158d5dd6766b5bd5a7cfc557cc35bb41c30824ef8529c)
     - [RecvTx](https://optimism-sepolia.blockscout.com/tx/0x52d400a9fda6f97d9901ccfb5e5d9828730edf544d0569c52b99ad8b944aca7c)
     - [Ack](https://base-sepolia.blockscout.com/tx/0xf584bb8e07f0b62f4d1d7315b826f40784a2aea10951d46979a68fdfb337e9f5)
@@ -133,6 +135,7 @@ Here's the data of our application:
     - [SendTx](https://optimism-sepolia.blockscout.com/tx/0x9a11c31ee3fd0ce7a659571fb447f53d19f9b82b333a27a47ee920642e76c496)
     - [RecvTx](https://base-sepolia.blockscout.com/tx/0x67716ea85626f05408912acd82ca97d5e6dc4779111f9a20bd9c71ecf1b80046)
     - [Ack](https://optimism-sepolia.blockscout.com/tx/0x9016774c41109290205763ef9473d3a410f503f128fcdfbaa43d2c6cf7c9e66d)
+
 
 
 ## Challenges Faced

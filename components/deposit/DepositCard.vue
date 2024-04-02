@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheSidebar from '../TheSidebar.vue'
-import { useChainId, useContractWrite, useSwitchNetwork  } from 'use-wagmi'
-import { abi } from '~/config/api'
+import { useChainId, useContractWrite, useSwitchNetwork } from 'use-wagmi'
 import { parseEther } from 'viem'
-
+import { baseSepolia, optimismSepolia } from 'viem/chains'
+import TheSidebar from '../TheSidebar.vue'
+import { abi } from '~/config/api'
 
 const chainId = useChainId()
 const { switchNetworkAsync } = useSwitchNetwork()
@@ -15,44 +15,43 @@ const networks = [
   },
   {
     chainId: 11155420,
-    name: 'Optimum',
+    name: 'Optimism',
   },
 ]
 
-const { data, write: deposit, isLoading: isLoading, isSuccess: isSuccess, isError: isError } = useContractWrite({
+const { data: dataOP, write: depositOP, isLoading: isLoadingOP, isSuccess: isSuccessOP, isError: isErrorOP } = useContractWrite({
   address: `0x${config.public.OP_BRIDGE_CONTRACT}`,
   abi,
   functionName: 'deposit',
 })
+const { data: dataBase, write: depositBase, isLoading: isLoadingBase, isSuccess: isSuccessBase, isError: isErrorBase } = useContractWrite({
+  address: `0x${config.public.BASE_BRIDGE_CONTRACT}`,
+  abi,
+  functionName: 'deposit',
+})
 
-const amount = ref(0);
-const selectedNetwork = ref('');
-
+const amount = ref(0)
+const selectedNetwork = ref(networks[0].chainId)
 
 async function handleDeposit() {
-  // Lấy giá trị của amount
-  const depositAmount = amount.value;
-  const depositNetwork = selectedNetwork.value;
-  let channelId = "";
-  
-  if(depositNetwork != chainId.value) {
-    await switchNetworkAsync(depositNetwork);
-  }
+  const depositNetwork = selectedNetwork.value
 
-  if (depositNetwork == networks[0].chainId){
-    channelId = config.public.BASE_CHANNEL_ID;
-  }else {
-    channelId = config.public.OP_CHANNEL_ID;
-  }
- 
-  await deposit({
-      args: [channelId, config.public.TIMEOUT],
-      value: parseEther(depositAmount.toString()),
+  if (depositNetwork !== chainId.value)
+    await switchNetworkAsync(depositNetwork)
+
+  if (chainId.value === baseSepolia.id) {
+    depositBase({
+      args: [config.public.BASE_CHANNEL_ID, config.public.TIMEOUT],
+      value: parseEther(amount.value.toString()),
     })
+  }
+  else if (chainId.value === optimismSepolia.id) {
+    depositOP({
+      args: [config.public.OP_CHANNEL_ID, config.public.TIMEOUT],
+      value: parseEther(amount.value.toString()),
+    })
+  }
 }
-
-
-
 </script>
 
 <template>
@@ -90,10 +89,10 @@ async function handleDeposit() {
                           <div>
                             <div id="networks-dropdown" class="relative text-left" data-headlessui-state="">
                               <select v-model="selectedNetwork" class="form-select form-select-lg mb-3 flex w-full text-sm md:text-lg text-left h-10 md:h-16 cursor-pointer focus:outline-none overflow-hidden border items-center py-1.5 px-3 justify-between hover:bg-alternative border-subdued rounded-lg" aria-label=".form-select-lg example">
-                              <option v-for="network in networks" :key="network.chainId" :value="network.chainId">
-                                {{ network.name }}
-                              </option>
-                            </select>
+                                <option v-for="network in networks" :key="network.chainId" :value="network.chainId">
+                                  {{ network.name }}
+                                </option>
+                              </select>
                             </div>
                             <div
                               class="flex h-4 lg:h-7 pt-1 lg:pt-2 -mb-3 lg:-mb-2 text-xs md:text-sm text-subdued justify-end lg:justify-between"
@@ -146,7 +145,7 @@ async function handleDeposit() {
                 <div
                   class="flex justify-between items-center bg-surface-subdued md:rounded-xl w-screen md:w-full p-4 sm:p-6 gap-2 md:gap"
                 >
-                <button
+                  <button
                     class="text-md transition px-5 rounded-full border flex items-center justify-center text-center border-primary-default bg-primary-default text-inverse w-full py-3.5 h-fit"
                     :disabled="amount <= 0"
                     @click="handleDeposit"

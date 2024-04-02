@@ -70,9 +70,69 @@ yarn preview
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.\
 ## Deployment Smart Contract
 
+This DAPP is using the contract here. [polymer-bridge-chain](https://github.com/anhhtvip/polymer-bridge-contract/tree/main). 
+
+By following the step by step.
+
+## Run All Task
+
+```bash
+just do-bridge
+```
+## Manually: 
+### Steps
+
+#### Set Bridge Contract
+
+```bash
+just set-contracts optimism Bridge false && just set-contracts base Bridge false
+```
+
+#### Deploy Contracts
+
+```bash
+just deploy optimism base
+```
+
+#### Sanity check to verify that configuration files match with your deployed contracts
+
+```bash
+just sanity-check
+```
+
+#### Create Channel
+
+```bash
+just create-channel
+```
+
+#### Send package
+
+```bash
+just deposit
+just bridge
+```
 
 
 ## Proof of testnet interaction
+After following the steps above you should have interacted with the testnet. You can check this at the [IBC Explorer](https://explorer.ethdenver.testnet.polymer.zone/).
+
+Here's the data of our application:
+
+- XBridge (Base Sepolia) : 0x88f2a340aE9D26E799b17bFA658c1B935be58433
+- XBridge (OP Sepolia): 0x16b4583C34e7D5332c1FDAe4DCCF65Bb232dc691
+- Channel (OP Sepolia): channel-40124
+- Channel (Base Sepolia): channel-40125
+
+- Proof of Deposit:
+    - [SendTx](https://base-sepolia.blockscout.com/tx/0xaefc6889a7fa948b9ee6d613b7273cef97f30e57d65d8777f70df861d5e70579)
+    - [RecvTx](https://optimism-sepolia.blockscout.com/tx/0x6b8914d75a2ecf6a7180c7bd9e767117cdfc59a111573dcbcbefaa9b057894a7)
+    - [Ack](https://base-sepolia.blockscout.com/tx/0xffa582fc1b1b474a11f23846b490f43e47eed7913d77b862270e9bd12c1091a0)
+
+- Proof of Bridge:
+    - [SendTx](https://optimism-sepolia.blockscout.com/tx/0x97c637d215d06efc43ce207595ff554c0561f818985da369eca4673480865910)
+    - [RecvTx](https://optimism-sepolia.blockscout.com/tx/0x6b8914d75a2ecf6a7180c7bd9e767117cdfc59a111573dcbcbefaa9b057894a7)
+    - [Ack](https://base-sepolia.blockscout.com/tx/0xffa582fc1b1b474a11f23846b490f43e47eed7913d77b862270e9bd12c1091a0)
 
 
 ## Challenges Faced
@@ -88,8 +148,15 @@ Basic functionality was implemented, but the following things can be improved:
 
 - More tests
 - More input validation
-- More improvement for user view. 
 - Add event listeners related to important IBC lifecycle steps
+- More improvement for user view.
+- Display the current balance in the vault on both OP and Base networks.
+- Display the user's balance on both OP and Base networks (optional).
+- Check if the funds in the vault are insufficient, then do not allow bridging.
+- Check if the funds are insufficient, then do not allow depositing/bridging.
+- Show transaction details after depositing/bridging.
+- Disable button and add loading while processing the transaction.
+
 
 ## Licence
 

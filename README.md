@@ -115,7 +115,8 @@ just bridge
 
 
 ## Proof of testnet interaction
-After following the steps above you should have interacted with the testnet. You can check this at the [IBC Explorer](https://explorer.ethdenver.testnet.polymer.zone/).
+
+After following the steps above you should have interacted with the testnet. You can check this at the [IBC Explorer](https://sepolia.polymer.zone/packets).
 
 Here's the data of our application:
 
@@ -125,18 +126,21 @@ Here's the data of our application:
 - Channel (Base Sepolia): channel-40125
 
 - Proof of Deposit:
-    - [SendTx](https://base-sepolia.blockscout.com/tx/0xaefc6889a7fa948b9ee6d613b7273cef97f30e57d65d8777f70df861d5e70579)
-    - [RecvTx](https://optimism-sepolia.blockscout.com/tx/0x6b8914d75a2ecf6a7180c7bd9e767117cdfc59a111573dcbcbefaa9b057894a7)
-    - [Ack](https://base-sepolia.blockscout.com/tx/0xffa582fc1b1b474a11f23846b490f43e47eed7913d77b862270e9bd12c1091a0)
+
+    - [SendTx](https://base-sepolia.blockscout.com/tx/0x19d5be71f66336d265e158d5dd6766b5bd5a7cfc557cc35bb41c30824ef8529c)
+    - [RecvTx](https://optimism-sepolia.blockscout.com/tx/0x52d400a9fda6f97d9901ccfb5e5d9828730edf544d0569c52b99ad8b944aca7c)
+    - [Ack](https://base-sepolia.blockscout.com/tx/0xf584bb8e07f0b62f4d1d7315b826f40784a2aea10951d46979a68fdfb337e9f5)
 
 - Proof of Bridge:
-    - [SendTx](https://optimism-sepolia.blockscout.com/tx/0x97c637d215d06efc43ce207595ff554c0561f818985da369eca4673480865910)
-    - [RecvTx](https://optimism-sepolia.blockscout.com/tx/0x6b8914d75a2ecf6a7180c7bd9e767117cdfc59a111573dcbcbefaa9b057894a7)
-    - [Ack](https://base-sepolia.blockscout.com/tx/0xffa582fc1b1b474a11f23846b490f43e47eed7913d77b862270e9bd12c1091a0)
+    - [SendTx](https://optimism-sepolia.blockscout.com/tx/0x9a11c31ee3fd0ce7a659571fb447f53d19f9b82b333a27a47ee920642e76c496)
+    - [RecvTx](https://base-sepolia.blockscout.com/tx/0x67716ea85626f05408912acd82ca97d5e6dc4779111f9a20bd9c71ecf1b80046)
+    - [Ack](https://optimism-sepolia.blockscout.com/tx/0x9016774c41109290205763ef9473d3a410f503f128fcdfbaa43d2c6cf7c9e66d)
+
 
 
 ## Challenges Faced
 
+This is a first app that we are trying to use the polymers and facing a lot issue during the deployment contract. But in the end, all the things are worknig smoothly.
 
 ## What we learned
 

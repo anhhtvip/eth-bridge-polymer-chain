@@ -15,7 +15,7 @@ const networks = [
   },
   {
     chainId: 11155420,
-    name: 'Optimum',
+    name: 'Optimism',
   },
 ]
 

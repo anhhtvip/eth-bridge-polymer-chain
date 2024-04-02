@@ -1,5 +1,57 @@
 <script setup lang="ts">
+import { useChainId, useContractWrite, useSwitchNetwork } from 'use-wagmi'
+import { parseEther } from 'viem'
+import { baseSepolia, optimismSepolia } from 'viem/chains'
 import TheSidebar from '../TheSidebar.vue'
+import { abi } from '~/config/api'
+
+const chainId = useChainId()
+const { switchNetworkAsync } = useSwitchNetwork()
+const config = useRuntimeConfig()
+const networks = [
+  {
+    chainId: 84532,
+    name: 'Base',
+  },
+  {
+    chainId: 11155420,
+    name: 'Optimum',
+  },
+]
+
+const { data: dataOP, write: depositOP, isLoading: isLoadingOP, isSuccess: isSuccessOP, isError: isErrorOP } = useContractWrite({
+  address: `0x${config.public.OP_BRIDGE_CONTRACT}`,
+  abi,
+  functionName: 'deposit',
+})
+const { data: dataBase, write: depositBase, isLoading: isLoadingBase, isSuccess: isSuccessBase, isError: isErrorBase } = useContractWrite({
+  address: `0x${config.public.BASE_BRIDGE_CONTRACT}`,
+  abi,
+  functionName: 'deposit',
+})
+
+const amount = ref(0)
+const selectedNetwork = ref(networks[0].chainId)
+
+async function handleDeposit() {
+  const depositNetwork = selectedNetwork.value
+
+  if (depositNetwork !== chainId.value)
+    await switchNetworkAsync(depositNetwork)
+
+  if (chainId.value === baseSepolia.id) {
+    depositBase({
+      args: [config.public.BASE_CHANNEL_ID, config.public.TIMEOUT],
+      value: parseEther(amount.value.toString()),
+    })
+  }
+  else if (chainId.value === optimismSepolia.id) {
+    depositOP({
+      args: [config.public.OP_CHANNEL_ID, config.public.TIMEOUT],
+      value: parseEther(amount.value.toString()),
+    })
+  }
+}
 </script>
 
 <template>
@@ -36,15 +88,9 @@ import TheSidebar from '../TheSidebar.vue'
                         <div>
                           <div>
                             <div id="networks-dropdown" class="relative text-left" data-headlessui-state="">
-                              <select class="form-select form-select-lg mb-3 flex w-full text-sm md:text-lg text-left h-10 md:h-16 cursor-pointer focus:outline-none overflow-hidden border items-center py-1.5 px-3 justify-between hover:bg-alternative border-subdued rounded-lg" aria-label=".form-select-lg example">
-                                <option selected>
-                                  Select a network
-                                </option>
-                                <option value="1">
-                                  Base
-                                </option>
-                                <option value="2">
-                                  Optimum
+                              <select v-model="selectedNetwork" class="form-select form-select-lg mb-3 flex w-full text-sm md:text-lg text-left h-10 md:h-16 cursor-pointer focus:outline-none overflow-hidden border items-center py-1.5 px-3 justify-between hover:bg-alternative border-subdued rounded-lg" aria-label=".form-select-lg example">
+                                <option v-for="network in networks" :key="network.chainId" :value="network.chainId">
+                                  {{ network.name }}
                                 </option>
                               </select>
                             </div>
@@ -64,7 +110,7 @@ import TheSidebar from '../TheSidebar.vue'
                               <div
                                 class="flex relative h-10 md:h-16 w-full border rounded bg-surface-default border-subdued"
                               >
-                                <input class="flex flex-row w-full text-left cursor-default focus:outline-none overflow-hidden items-center rounded-lg bg-alternative" type="number">
+                                <input v-model="amount" class="flex flex-row w-full text-left cursor-default focus:outline-none overflow-hidden items-center rounded-lg bg-alternative" type="number">
                               </div>
                               <div>
                                 <div class="flex h-4 md:h-5" />
@@ -97,19 +143,14 @@ import TheSidebar from '../TheSidebar.vue'
                 class="z-40 md:z-0 -mx-4 md:-mx-0 pb-4 w-full fixed bottom-0 md:bottom-auto md:relative flex flex-col items-center bg-surface-subdued md:bg-alternative mt-5 space-y-2 mb-10"
               >
                 <div
-                  class="flex justify-between items-center bg-surface-subdued md:rounded-xl w-screen md:w-full p-4 sm:p-6 gap-2 md:gap-6"
+                  class="flex justify-between items-center bg-surface-subdued md:rounded-xl w-screen md:w-full p-4 sm:p-6 gap-2 md:gap"
                 >
-                  <div class="flex-2 lg:flex-1 flex flex-col w-fit whitespace-nowrap">
-                    <h3 class="text-subdued flex whitespace-nowrap">
-                      Total (send + gas)
-                    </h3>
-                    <h1 class="font-bold text-xl">
-                      $0.00
-                    </h1>
-                  </div><button
-                    class="text-md transition px-5 rounded-full border flex items-center justify-center text-center  border-primary-default bg-primary-default text-inverse w-full lg:w-[515px] py-3.5 h-fit"
+                  <button
+                    class="text-md transition px-5 rounded-full border flex items-center justify-center text-center border-primary-default bg-primary-default text-inverse w-full py-3.5 h-fit"
+                    :disabled="amount <= 0"
+                    @click="handleDeposit"
                   >
-                    <span>Confirm</span>
+                    Deposit
                   </button>
                 </div>
               </div>

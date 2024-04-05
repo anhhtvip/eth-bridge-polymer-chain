@@ -138,8 +138,8 @@ Here's the data of our application:
 
 ## DAPP Demonstration
 Here is the PoC of out Dapp about L2 to L2 native bridge: 
-[![Watch the video](Demo)]([https://asciinema.org/a/113463](https://youtu.be/ZHLzDZLNSLM))
-[![Bridge_polymer]({})]({https://youtu.be/ZHLzDZLNSLM} "Bridge_polymer")
+
+[![Bridge_polymer]({https://youtu.be/ZHLzDZLNSLM})]({https://youtu.be/ZHLzDZLNSLM} "Bridge_polymer")
 
 
 

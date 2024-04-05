@@ -137,10 +137,7 @@ Here's the data of our application:
     - [Ack](https://optimism-sepolia.blockscout.com/tx/0x9016774c41109290205763ef9473d3a410f503f128fcdfbaa43d2c6cf7c9e66d)
 
 ## DAPP Demonstration
-Here is the PoC of out Dapp about L2 to L2 native bridge: 
-
-[![Bridge_polymer]({https://youtu.be/ZHLzDZLNSLM})]({https://youtu.be/ZHLzDZLNSLM} "Bridge_polymer")
-
+Here is the PoC of out Dapp about L2 to L2 native bridge: [https://youtu.be/ZHLzDZLNSLM](Demonstration)
 
 
 ## Challenges Faced

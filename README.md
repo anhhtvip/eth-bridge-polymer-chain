@@ -137,7 +137,9 @@ Here's the data of our application:
     - [Ack](https://optimism-sepolia.blockscout.com/tx/0x9016774c41109290205763ef9473d3a410f503f128fcdfbaa43d2c6cf7c9e66d)
 
 ## DAPP Demonstration
-Here is the PoC of out Dapp about L2 to L2 native bridge: [https://youtu.be/ZHLzDZLNSLM](Demonstration)
+Here is the PoC of out Dapp about L2 to L2 native bridge: 
+
+[![](https://i9.ytimg.com/vi_webp/ZHLzDZLNSLM/mq1.webp?sqp=CJCRwLAG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGDUgZChyMA8=&rs=AOn4CLBqvPMDmA2hGWhdhMUpwCGpxFkiDg)]([https://youtu.be/dQw4w9WgXcQ](https://www.youtube.com/watch?v=ZHLzDZLNSLM))
 
 
 ## Challenges Faced

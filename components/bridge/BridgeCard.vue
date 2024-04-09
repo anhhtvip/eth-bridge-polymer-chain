@@ -7,27 +7,31 @@ import { abi } from '~/config/api'
 const chainId = useChainId()
 const { switchNetworkAsync } = useSwitchNetwork()
 const config = useRuntimeConfig()
-const { data: dataOP, write: writeOP, isLoading: isLoadingOP, isSuccess: isSuccessOP, isError: isErrorOP } = useContractWrite({
+const isProcessing = ref(false);
+const result = ref(null);
+const { data: dataOP, writeAsync: writeOP, isLoading: isLoadingOP, isSuccess: isSuccessOP, isError: isErrorOP } = useContractWrite({
   address: `0x${config.public.OP_BRIDGE_CONTRACT}`,
   abi,
   functionName: 'bridge',
 })
-const { data: dataBase, write: writeBase, isLoading: isLoadingBase, isSuccess: isSuccessBase, isError: isErrorBase } = useContractWrite({
+const { data: dataBase, writeAsync: writeBase, isLoading: isLoadingBase, isSuccess: isSuccessBase, isError: isErrorBase } = useContractWrite({
   address: `0x${config.public.BASE_BRIDGE_CONTRACT}`,
   abi,
   functionName: 'bridge',
 })
 
-const amount = ref(0)
+const amount = ref(null)
 
 const networks = [
   {
     chainId: 84532,
     name: 'Base',
+    exploreUrl: "https://base-sepolia.blockscout.com/",
   },
   {
     chainId: 11155420,
     name: 'Optimism',
+    exploreUrl: "https://optimism-sepolia.blockscout.com/"
   },
 ]
 
@@ -41,21 +45,26 @@ watch(toNetwork, async (newVal) => {
 })
 
 async function bridge() {
+  isProcessing.value = true;
   if (chainId.value !== fromNetwork.value)
     await switchNetworkAsync(fromNetwork.value)
 
   if (chainId.value === baseSepolia.id) {
-    writeBase({
+    const re = await writeBase({
       args: [config.public.BASE_CHANNEL_ID, config.public.TIMEOUT, toNetwork.value],
       value: parseEther(amount.value.toString()),
     })
+    result.value = networks[0].exploreUrl + "tx/" + re.hash
   }
   else if (chainId.value === optimismSepolia.id) {
-    writeOP({
+    const re = await writeOP({
       args: [config.public.OP_CHANNEL_ID, config.public.TIMEOUT, toNetwork.value],
       value: parseEther(amount.value.toString()),
     })
+    result.value = networks[1].exploreUrl + "tx/" + re.hash
+
   }
+  isProcessing.value = false;
 }
 </script>
 
@@ -155,7 +164,7 @@ async function bridge() {
                           <div
                             class="flex relative h-10 md:h-16 w-full border rounded bg-surface-default border-subdued"
                           >
-                            <input v-model="amount" class="flex flex-row w-full text-left cursor-default focus:outline-none overflow-hidden items-center rounded-lg bg-alternative" type="number">
+                            <input v-model="amount" class="flex flex-row w-full text-left cursor-default focus:outline-none overflow-hidden items-center rounded-lg bg-alternative" type="number" placeholder="0">
                           </div>
                           <div>
                             <div class="flex h-4 md:h-5" />
@@ -174,12 +183,27 @@ async function bridge() {
                 >
                   <button
                     class="text-md transition px-5 rounded-full border flex items-center justify-center text-center border-primary-default bg-primary-default text-inverse w-full py-3.5 h-fit"
-                    :disabled="amount <= 0"
+                    :disabled="amount <= 0 || isProcessing"
                     @click="bridge"
                   >
-                    Bridge
+                  <svg v-if="isProcessing" class="animate-spin h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.96 7.96 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zm12 0l3 2.647A7.959 7.959 0 0120 12h-4c0 2.228-.904 4.235-2.35 5.708L16 17.292zM6 6.709l-3 2.647A7.959 7.959 0 014 12h4c0-2.228.904-4.235 2.35-5.708L6 6.709z"></path>
+                        </svg>
+                        <!-- Nội dung nút -->
+                  <span v-if="!isProcessing">Bridge</span>
+                    
                   </button>
                 </div>
+                <br>
+                <div
+                    v-if="result !== null"
+                    class="justify-center text-center w-full mt-10"
+                  >
+                    <a target="_blank" :href="result">
+                      Following Transaction Hash (Click here)
+                    </a>
+                  </div>
               </div>
               <div
                 class="xl:fixed xl:w-min xl:bottom-10 xl:right-10 md:flex-row md:flex-wrap flex flex-col gap-4 md:z-40 pointer-events-none w-full justify-center"
